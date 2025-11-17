@@ -282,6 +282,16 @@ class Pipeline:
             outputs = self._run_model()
 
         if self.is_main_process():
+            # Get token counts from the model and log them
+            if hasattr(self.model, "get_token_counts") and callable(getattr(self.model, "get_token_counts")):
+                try:
+                    input_tokens, output_tokens = self.model.get_token_counts()
+                    self.evaluation_tracker.general_config_logger.log_token_counts(input_tokens, output_tokens)
+                    logger.info(f"Total Tokens Used: Input={input_tokens:,}, Output={output_tokens:,}, Total={(input_tokens + output_tokens):,}")
+                except Exception as e:
+                    logger.warning(f"Could not retrieve token counts from the model: {e}")
+
+
             self._post_process_outputs(outputs)
             self._compute_metrics(outputs)
 

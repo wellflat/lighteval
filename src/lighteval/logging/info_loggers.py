@@ -93,6 +93,11 @@ class GeneralConfigLogger:
     model_config: ModelConfig = None
     model_name: str = None
 
+    # Token counts
+    total_input_tokens: int | None = None
+    total_output_tokens: int | None = None
+    total_tokens: int | None = None
+
     def __init__(self) -> None:
         """Stores the current lighteval commit for reproducibility, and starts the evaluation timer."""
         try:
@@ -132,6 +137,12 @@ class GeneralConfigLogger:
     def log_end_time(self) -> None:
         self.end_time = time.perf_counter()
         self.total_evaluation_time_secondes = str(self.end_time - self.start_time)
+
+    def log_token_counts(self, input_tokens: int, output_tokens: int) -> None:
+        """Logs the total token counts."""
+        self.total_input_tokens = input_tokens
+        self.total_output_tokens = output_tokens
+        self.total_tokens = input_tokens + output_tokens
 
 
 @dataclass()

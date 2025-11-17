@@ -165,6 +165,10 @@ class LiteLLMClient(LightevalModel):
         # Initialize cache for tokenization and predictions
         self._cache = SampleCache(config)
 
+        # Initialize token counters
+        self.total_input_tokens = 0
+        self.total_output_tokens = 0
+
     def _prepare_stop_sequence(self, stop_sequence):
         """Prepare and validate stop sequence."""
         if self.provider == "anthropic":
@@ -230,6 +234,11 @@ class LiteLLMClient(LightevalModel):
                     logger.info("Response is empty, retrying without caching")
                     kwargs["caching"] = False
                     response = litellm.completion(**kwargs)
+
+                if response and response.usage:
+                    self.total_input_tokens += response.usage.prompt_tokens
+                    self.total_output_tokens += response.usage.completion_tokens
+                    #print(f"total_input_tokens: {self.total_input_tokens}, total_output_tokens: {self.total_output_tokens}")
                     content = response.choices[0].message.content
 
                 return response
@@ -414,3 +423,7 @@ class LiteLLMClient(LightevalModel):
     def loglikelihood_rolling(self, docs: list[Doc]) -> list[ModelResponse]:
         """This function is used to compute the log likelihood of the context for perplexity metrics."""
         raise NotImplementedError
+
+    def get_token_counts(self) -> tuple[int, int]:
+        """Returns the total number of input and output tokens."""
+        return self.total_input_tokens, self.total_output_tokens
