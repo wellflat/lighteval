@@ -131,6 +131,9 @@ class LiteLLMModelConfig(ModelConfig):
     api_retry_multiplier: float = 2.0
     timeout: float | None = None
 
+    total_input_tokens: int = 0
+    total_output_tokens: int = 0
+
 
 @requires("litellm")
 class LiteLLMClient(LightevalModel):
