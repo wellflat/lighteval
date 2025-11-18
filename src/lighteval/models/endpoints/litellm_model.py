@@ -169,6 +169,7 @@ class LiteLLMClient(LightevalModel):
         self._cache = SampleCache(config)
 
         # Initialize token counters
+        # NOTE: 追加実装
         self.total_input_tokens = 0
         self.total_output_tokens = 0
 
