@@ -410,7 +410,8 @@ aime24 = LightevalTaskConfig(
     few_shots_split=None,
     few_shots_select=None,
     generation_size=None,
-    metrics=[Metrics.pass_at_k_math(sample_params={"k": 1}), Metrics.avg_at_n_math(sample_params={"n": 1})],
+    #metrics=[Metrics.pass_at_k_math(sample_params={"k": 1}), Metrics.avg_at_n_math(sample_params={"n": 1})],
+    metrics=[Metrics.pass_at_k_math(sample_params={"k": 1, "n": 1})],
     version=2,
 )
 aime24_avg = LightevalTaskConfig(
