@@ -1199,7 +1199,8 @@ class AvgAtN(SamplingMetric, SampleLevelComputation):
             float: Aggregated score over the current sample's items.
         """
         all_scores = []
-        for i in range(self.k):
+        # for i in range(self.k): NOTE: 以下修正
+        for i in range(self.n):
             all_scores.append(self.compute_score(doc, model_response[i]))
 
         avg_score = np.mean(all_scores)

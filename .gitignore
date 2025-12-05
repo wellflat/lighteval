@@ -183,3 +183,6 @@ prod_env
 logs
 _logs
 outputs
+
+cache/
+.litellm_cache/
